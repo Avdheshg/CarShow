@@ -5,13 +5,18 @@ const dotenv = require("dotenv");
 dotenv.config({path: "./config.env"});
 
 const carRouter = require("./routes/carRoutes");
+const userRouter = require("./routes/userRoutes");
 
 const app = express();
 app.use(express.json());
 
 // console.log(process.env.DATABASE);
 
-
+app.use((req, res, next) => {
+    // console.log(req.headers);
+    next();
+})
+ 
 
 // Connecting to the DB
 const DB = process.env.DATABASE.replace("<PASSWORD>", process.env.DATABASE_PASSWORD);
@@ -25,6 +30,15 @@ mongoose.connect(DB, {
 })
 
 app.use("/", carRouter);
+app.use("/user", userRouter);
+
+// Defining a MW for undefined routes   
+app.all("*", (req, res, next) => {
+    res.status(404).json({
+        status: "fail", 
+        messgae: `Can't find ${req.originalUrl} on this server`
+    });
+});
 
 
 

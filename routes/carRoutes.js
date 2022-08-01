@@ -1,6 +1,7 @@
 
 const express = require("express");
 const carController = require("../controllers/carController");
+const authController = require("./../controllers/authController");
 
 const router = express.Router();
 
@@ -22,7 +23,8 @@ router
 
 router
     .route("/getAllCars")
-    .get(carController.getAllCars)
+    .get(authController.protect, carController.getAllCars)
+    // .get(carController.getAllCars)
     .post(carController.createCar)
 
 router

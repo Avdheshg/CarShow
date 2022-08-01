@@ -49,7 +49,11 @@ const carSchema = new mongoose.Schema({
     },
     good: [String],
     bad: [String],
-    images: [String]
+    images: [String],
+    secretCar: {
+        type: Boolean,
+        default: false
+    }
 });
 
 const Car = mongoose.model("Car", carSchema);
